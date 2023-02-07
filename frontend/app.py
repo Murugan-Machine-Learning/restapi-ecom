@@ -3,6 +3,8 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 app.debug = True
 
+API_URL = "http://127.0.0.1:8000/api/"
+
 
 @app.route("/")
 def index():

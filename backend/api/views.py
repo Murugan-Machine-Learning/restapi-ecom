@@ -1,8 +1,10 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, serializers
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from .models import User
-from .serializers import UserSerializer
+from .models import User, Country
+from .serializers import UserSerializer, CountrySerializer
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
 
 class SignUpView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -10,7 +12,8 @@ class SignUpView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        return 1
+        # print(request.POST.items())
+        # return HttpResponse(request.POST.items())
         try:
             return super().create(request, *args, **kwargs)
         except serializers.ValidationError as error:
@@ -27,3 +30,11 @@ class LoginView(generics.GenericAPIView):
             return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+    def countries(request):
+        queryset = Country.objects.all()
+
+        serializer = CountrySerializer(queryset, many=True)
+        print(serializer.data)
+        return Response(serializer.data, safe=False)

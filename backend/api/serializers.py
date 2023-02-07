@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Country
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,3 +21,9 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = '__all__'
